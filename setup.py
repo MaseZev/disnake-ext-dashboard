@@ -1,20 +1,28 @@
-<h1 align=center>discord-ext-dashboard</h1>
-<p align=center>Веб-перехватчик и расширение discord.py на основе запросов для создания панели инструментов бота.</p>
+from setuptools import setup
+import re
+import os
 
+version = ""
+with open("disnake/ext/dashboard/__init__.py") as f:
+	version = re.search(r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE).group(1)
+
+if not version:
+	raise RuntimeError("version is not set")
+		
+
+readme = '''
 ## Установка
 ```py
-# ЕСЛИ УСТНОВЛЕН
-pip install --upgrade discord-ext-dashboard
+pip install --upgrade disnake-ext-dashboard
 
-# ЕСЛИ НЕ УСТАНОВЛЕН
-python3 -m pip install --upgrade discord-ext-dashboard
+python3 -m pip install --upgrade disnake-ext-dashboard
 ```
 
 ## Применение
 ### Предпосылки
 Прежде чем приступить к работе, вам понадобится несколько вещей:
  - Вебхук в секретном канале (если у кого-то есть доступ, он сможет все получить лягушку а это плохо).
- - Правильно размещенный бот [**disnake**](https://github.com/Rapptz/discord.py)
+ - Правильно размещенный бот [**disnake.py**](https://github.com/DisnakeDev/disnake)
  
  И так поехали!(жабы топ)
 
@@ -22,8 +30,8 @@ python3 -m pip install --upgrade discord-ext-dashboard
 #### Бот
 ```py
 import disnake
-from discord.ext import commands
-from discord.ext.dashboard import Dashboard
+from disnake.ext import commands
+from disnake.ext.dashboard import Dashboard
 
 bot = commands.Bot(command_prefix="!")
 bot_dashboard = Dashboard(bot,
@@ -54,7 +62,7 @@ bot.run("your-token-here")
 #### Веб-сервер
 ```py
 from quart import Quart, request
-from discord.ext.dashboard import Server
+from disnake.ext.dashboard import Server
 
 app = Quart(__name__)
 app_dashboard = Server(
@@ -82,7 +90,30 @@ if __name__ == "__main__":
 ```
 
 
-Обратите внимание, что Cogs в настоящее время не поддерживаются.
-<br>
-Вам также нужно будет использовать Quart в качестве веб-сервера. Переключиться с другой библиотеки несложно.
-<br><br>
+Обратите внимание, что Cogs в настоящее время не поддерживаются.'''
+
+	
+
+requirements = ["disnake>=2.7.0"]
+
+setup(name='disnake-ext-dashboard',
+      author='MaseZev',
+      url='https://github.com/MaseZev/disnake-ext-dashboard',
+      version=version,
+      packages=['disnake.ext.dashboard'],
+      license='MIT',
+      description='Веб-перехватчик и расширение disnake на основе запросов для создания панели управления ботом.',
+      long_description=readme,
+      long_description_content_type="text/markdown",
+      install_requires=requirements,
+      python_requires='>=3.8.0',
+      classifiers=[
+        'Natural Language :: English',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3.8',
+        'Topic :: Internet',
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+        'Topic :: Utilities',
+      ]
+)
